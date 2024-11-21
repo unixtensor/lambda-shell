@@ -1,0 +1,12 @@
+[package]
+name = "lambdashell"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.5.20", features = ["derive"] }
+color-print = "0.3.7"
+const_format = "0.2.33"
+home = "0.5.9"
+mlua = { version = "0.10.0", features = ["luau-jit"] }
+whoami = "1.5.2"
