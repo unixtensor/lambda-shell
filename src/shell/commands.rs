@@ -1,30 +1,15 @@
-use std::{io, path::{Path, PathBuf}, process, str::SplitWhitespace};
+use std::{fs, io, path::{Path, PathBuf}, process, str::SplitWhitespace};
 use color_print::cformat;
+use uzers::User;
 use super::verbose::Verbose;
-
-pub type ProcessExitStatus = Option<process::ExitStatus>;
-
-pub struct Command {
-	verbose: Verbose,
-	input: String
-}
 
 trait CommandsVerbose {
 	fn command_failure(&self, error: io::Error);
 	fn unknown_command(&self, error: io::Error);
 	fn cd_error(&self, error: io::Error);
+	fn dir_missing(&self, message: String);
 	// fn unknown_dir(&self, dir: &OsStr);
 }
-trait ChangeDirectory {
-	fn change_directory(&self, args: SplitWhitespace) -> Option<PathBuf>;
-	fn set_current_dir(&self, new_path: &Path) -> Option<PathBuf>;
-	fn cd_args(&self, vec_args: Vec<String>) -> Option<PathBuf>;
-	fn specific_user_dir(&self, arg: String);
-	fn root(&self) -> Option<PathBuf>;
-	fn home(&self) -> Option<PathBuf>;
-	fn previous_dir(&self);
-}
-
 impl CommandsVerbose for Verbose {
 	#[inline]
 	fn cd_error(&self, error: io::Error) {
@@ -47,41 +32,77 @@ impl CommandsVerbose for Verbose {
 			format!("{error}")
 		);
 	}
-	// #[inline]
-	// fn unknown_dir(&self, dir: &OsStr) {
-	// 	self.format(
-	// 		cformat!("{dir}"),
-	// 		format!("{dir}")
-	// 	);
-	// }
+	#[inline]
+	fn dir_missing(&self, message: String) {
+		self.format(
+			cformat!("The directory \"<bold>{message}</>\" does not exist."),
+			format!("The directory {message:?} does not exist.")
+		);
+	}
 }
 
-impl ChangeDirectory for Command {
-	fn set_current_dir(&self, new_path: &Path) -> Option<PathBuf> {
-		match std::env::set_current_dir(new_path) {
-		    Ok(()) => Some(new_path.to_path_buf()),
-		    Err(set_dir_error) => {
-				self.verbose.cd_error(set_dir_error);
-				None
-			},
-		}
+fn set_current_dir(new_path: &Path) -> Option<PathBuf> {
+	match std::env::set_current_dir(new_path) {
+	    Ok(()) => Some(new_path.to_path_buf()),
+	    Err(_) => None,
 	}
+}
 
+trait ChangeDirectory {
+	fn change_directory(&self, args: SplitWhitespace) -> Option<PathBuf>;
+	fn specific_user_dir(&self, user: String) -> Option<PathBuf>;
+	fn cd_args(&self, vec_args: Vec<String>) -> Option<PathBuf>;
+	fn previous_dir(&self);
+	fn root(&self) -> Option<PathBuf>;
+	fn home(&self) -> Option<PathBuf>;
+}
+impl ChangeDirectory for Command {
 	fn previous_dir(&self) {
 
 	}
 
 	fn root(&self) -> Option<PathBuf> {
-		self.set_current_dir(Path::new("/"))
+		set_current_dir(Path::new("/"))
 	}
 
-	fn specific_user_dir(&self, arg: String) {
-
+	fn specific_user_dir(&self, requested_user: String) -> Option<PathBuf> {
+		if requested_user == "root" {
+			let root_home = PathBuf::from("/root");
+			return match root_home.try_exists() {
+				Ok(root_folder_exist) => match root_folder_exist {
+					true => Some(root_home),
+					false => {
+						self.verbose.dir_missing("hi".to_string());
+						self.home()
+					}
+				},
+				Err(_) => self.home()
+			};
+		} else {
+			for user in unsafe { uzers::all_users().collect::<Vec<User>>() } {
+				let user_name = user.name();
+				if *requested_user == *user_name {
+					let mut user_dir = PathBuf::from("/home");
+					user_dir.push(user_name);
+					return match user_dir.try_exists() {
+						Ok(user_dir_exist) => match user_dir_exist {
+							true => Some(user_dir),
+							false => {
+								self.verbose.dir_missing("hi".to_string());
+								self.home()
+							}
+						},
+						Err(_) => self.home()
+					}
+				}
+			}
+			None
+		}
 	}
 
 	fn home(&self) -> Option<PathBuf> {
 		match home::home_dir() {
-			Some(home_path_buf) => self.set_current_dir(&home_path_buf),
+			Some(home_path_buf) => set_current_dir(&home_path_buf),
 			None => self.root()
 		}
 	}
@@ -90,8 +111,8 @@ impl ChangeDirectory for Command {
 		let string_path = vec_args.concat();
 		let new_path = Path::new(string_path.as_str());
 		match new_path.is_dir() {
- 			true => self.set_current_dir(new_path),
-	        false => {
+			true => set_current_dir(new_path),
+        	false => {
 				match new_path.file_name() {
 			        Some(file_name) => eprintln!("cd: {:?} is not a directory.", file_name),
 			        None => eprintln!("cd: Failed to resolve the file name."),
@@ -107,9 +128,15 @@ impl ChangeDirectory for Command {
 			Some(arg) => match arg.as_str() {
 				"/" => self.root(),
 				"-" => todo!(),
-				_ => match arg.chars().next() {
-					Some(char) => if char == '~' {todo!()} else {self.home()},
-			        None => self.cd_args(vec_args),
+				_ => {
+					let mut arg_chars = arg.chars();
+					match arg_chars.next() {
+						Some(char) => match char == '~' {
+					        true => self.specific_user_dir(arg_chars.collect::<String>()),
+					        false => self.cd_args(vec_args),
+					    }
+			        	None => self.home(),
+					}
 				}
 			},
 			None => self.home()
@@ -117,6 +144,11 @@ impl ChangeDirectory for Command {
 	}
 }
 
+pub type ProcessExitStatus = Option<process::ExitStatus>;
+pub struct Command {
+	verbose: Verbose,
+	input: String
+}
 impl Command {
 	pub fn new(input: String, verbose: Verbose) -> Self {
 		Self {

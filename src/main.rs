@@ -2,10 +2,10 @@
 mod shell;
 #[path = "./shell/ps.rs"]
 mod ps;
-#[path = "./shell/commands.rs"]
-mod commands;
 #[path = "./shell/rc.rs"]
 mod rc;
+#[path = "./shell/commands.rs"]
+mod commands;
 #[path = "./shell/cli.rs"]
 mod cli;
 #[path = "./shell/verbose.rs"]

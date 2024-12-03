@@ -1,6 +1,6 @@
-use std::io;
-use color_print::{cformat, cprint};
 use super::{commands, verbose::Verbose};
+use color_print::cformat;
+use std::io;
 use super::ps;
 
 pub struct Config {
