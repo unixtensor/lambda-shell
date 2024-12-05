@@ -27,7 +27,8 @@ pub struct Cli {
 pub fn parser() -> Option<Cli> {
 	let cli_parser = Cli::parse();
 	if cli_parser.version {
-		println!("Lambda Shell, version {}.", VERSION);
+		println!("Lambda Shell, version: {}.", VERSION);
+		println!("liblambdashell, version: {}.", liblambdashell::VERSION);
 		return None //stop here
 	}
 	Some(cli_parser)

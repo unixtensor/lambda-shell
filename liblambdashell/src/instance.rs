@@ -5,15 +5,15 @@ pub struct Config {
     pub norc: bool
 }
 
-pub struct Storage {
-    pub command_exit_status: commands::ProcessExitStatus,
-    pub ps1: String,
-}
-
 pub struct LambdaShell {
     terminating: bool,
     storage: Storage,
     config: Config,
+}
+
+struct Storage {
+    pub command_exit_status: commands::ProcessExitStatus,
+    pub ps1: String,
 }
 
 impl LambdaShell {
