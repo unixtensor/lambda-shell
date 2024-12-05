@@ -22,7 +22,7 @@ trait ChangeDirectory {
     fn specific_user_dir(&self, user: String) -> Option<PathBuf>;
     fn cd_args(&self, vec_args: Vec<String>) -> Option<PathBuf>;
     fn previous_dir(&self) -> Option<PathBuf>;
-    fn home_dir(&self, ) -> Option<PathBuf>;
+    fn home_dir(&self) -> Option<PathBuf>;
 }
 
 impl PathBufIsValid for PathBuf {
