@@ -1,12 +1,5 @@
-#[path = "./shell/shell.rs"]
-mod shell;
-#[path = "./shell/ps.rs"]
-mod ps;
-#[path = "./shell/rc.rs"]
-mod rc;
-#[path = "./shell/commands.rs"]
-mod commands;
-#[path = "./shell/cli.rs"]
+use liblambdashell::shell;
+
 mod cli;
 
 fn main() {

@@ -1,7 +1,7 @@
 use const_format::formatcp;
 use color_print::{cformat, cprint};
 
-pub const DEFAULT_PS: &str = formatcp!("{}-{}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
+pub const DEFAULT_PS: &str = formatcp!("lambdashell-{}", env!("CARGO_PKG_VERSION"));
 
 pub fn working_dir_name() -> String {
     match std::env::current_dir() {

@@ -1,4 +1,4 @@
-use super::{ps, commands};
+use crate::{ps, commands};
 use std::io;
 
 pub struct Config {

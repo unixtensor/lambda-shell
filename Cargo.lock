@@ -223,12 +223,7 @@ name = "lambdashell"
 version = "0.1.0"
 dependencies = [
  "clap",
- "color-print",
- "const_format",
- "home",
- "mlua",
- "uzers",
- "whoami",
+ "liblambdashell",
 ]
 
 [[package]]
@@ -236,6 +231,18 @@ name = "libc"
 version = "0.2.167"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "09d6582e104315a817dff97f75133544b2e094ee22447d2acf4a74e189ba06fc"
+
+[[package]]
+name = "liblambdashell"
+version = "0.1.0"
+dependencies = [
+ "color-print",
+ "const_format",
+ "home",
+ "mlua",
+ "uzers",
+ "whoami",
+]
 
 [[package]]
 name = "libloading"

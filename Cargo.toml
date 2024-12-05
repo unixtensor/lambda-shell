@@ -5,9 +5,10 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.5.20", features = ["derive"] }
-color-print = "0.3.7"
-const_format = "0.2.33"
-home = "0.5.9"
-mlua = { version = "0.10.0", features = ["luau-jit"] }
-uzers = "0.12.1"
-whoami = "1.5.2"
+liblambdashell = { path = "liblambdashell" }
+
+[profile.release]
+# strip = true
+# opt-level = 3
+# lto = true
+# codegen-units = 1
