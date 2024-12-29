@@ -19,35 +19,55 @@ type map_functions = {
 }
 --------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------
-type shell = {
-	system: {
-		desktop_env: string,
-		devicename:  string,
-		username:    string,
-		hostname:    string,
-		realname:    string,
-		platform:    string,
-		distro:      string
+type SHELL = {
+	SYSTEM: {
+		DESKTOP_ENV: string,
+		DEVICENAME:  string,
+		USERNAME:    string,
+		HOSTNAME:    string,
+		REALNAME:    string,
+		PLATFORM:    string,
+		DISTRO:      string
 	},
-	env: {
-		var:     (string) -> string?,
-		vars:    {string},
-		set_var: (K: string, V: string) -> (),
-		current_dir: {
-			file_name: string,
+	ENV: {
+		VAR:     (string) -> string?,
+		VARS:    {string},
+		SET_VAR: (K: string, V: string) -> (),
+		CURRENT_DIR: {
+			FILE_NAME: string,
 		},
 	},
-	process: {
-		exit_status: string,
-		exit_status_changed: lambda<()>
+	PROCESS: {
+		EXIT_STATUS: string,
+		EXIT_STATUS_CHANGED: lambda<()>
 	},
-	config: {
-		extra_color: boolean,
-		verbose: boolean
+	CONFIG: {
+		EXTRA_COLOR: boolean,
+		VERBOSE: boolean
 	},
-	prompt: string,
-	info: string,
-	terminate: () -> ()
+	PROMPT: string,
+	INFO: string,
+	TERMINATE: () -> ()
+}
+--------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------
+type color<T> = (string) -> T
+type colors = {
+	RED:    color<string>,
+	ORANGE: color<string>,
+	YELLOW: color<string>,
+	GREEN:  color<string>,
+	BLUE:   color<string>,
+	PURPLE: color<string>
+}
+type text_style = {
+	STYLE: {
+		BACKGROUND: colors,
+		FOREGROUND: colors
+	}
+}
+type TERMINAL = {
+	TEXT: text_style
 }
 --------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------
@@ -80,13 +100,14 @@ export type Alias = alias
 local Alias = {} :: alias_constructor
 Alias.__index = Alias
 
-local Shell = {} :: shell
+local SHELL = {} :: SHELL
+local TERMINAL = {} :: TERMINAL
 local Command = {} :: command_builder
 
-local Username = Shell.system.username
-local Hostname = Shell.system.hostname
+local username = TERMINAL.TEXT.GREEN(SHELL.SYSTEM.USERNAME)
+local hostname = SHELL.SYSTEM.HOSTNAME
 
-Shell.prompt = `{Username}@{Hostname} λ `
+SHELL.PROMPT = `{username}@{hostname} λ `
 
 local command_builder = Command.new("yt-dlp")
 					  .arg('--format')

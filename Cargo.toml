@@ -5,10 +5,10 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.5.20", features = ["derive"] }
-liblambdashell = { path = "liblambdashell" }
+liblambdashell = { path = "../liblambdashell" }
 
 [profile.release]
-# strip = true
-# opt-level = 3
-# lto = true
-# codegen-units = 1
+strip = true
+opt-level = "s"
+lto = true
+codegen-units = 1
