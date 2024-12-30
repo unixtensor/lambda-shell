@@ -5,18 +5,16 @@ type class_constructor<CON, F, EXT = {}> = {
 	__index: CON,
 	new: F,
 } & EXT
-type class_method<Self, R, T...> = (self: Self, T...) -> R
-
-type map<V, K = string> = {
-	[K]: V
-}
-type lambda<T...> = (f: (T...) -> ()) -> ()
 type map_functions = {
 	len:        () -> number,
 	len_keys:   () -> number,
 	len_values: () -> number,
 	for_each:   lambda<string, string>
 }
+type func_map<T, A...> = (A...) -> T
+type class_method<Self, R, T...> = (self: Self, T...) -> R
+type map<V, K = string>          = {[K]: V}
+type lambda<T...>                = (f: (T...) -> ()) -> ()
 --------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------
 type SHELL = {
@@ -51,23 +49,26 @@ type SHELL = {
 }
 --------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------
-type color<T> = (string) -> T
-type colors = {
-	RED:    color<string>,
-	ORANGE: color<string>,
-	YELLOW: color<string>,
-	GREEN:  color<string>,
-	BLUE:   color<string>,
-	PURPLE: color<string>
-}
-type text_style = {
-	STYLE: {
-		BACKGROUND: colors,
-		FOREGROUND: colors
-	}
+-- type text_on_foreground = {
+-- 	ON_RED:    func_map<string>,
+-- 	ON_ORANGE: func_map<string>,
+-- 	ON_YELLOW: func_map<string>,
+-- 	ON_GREEN:  func_map<string>,
+-- 	ON_BLUE:   func_map<string>,
+-- 	ON_PURPLE: func_map<string>,
+-- }
+type text_colors = {
+	RED:    func_map<string, string>,
+	ORANGE: func_map<string, string>,
+	YELLOW: func_map<string, string>,
+	GREEN:  func_map<string, string>,
+	BLUE:   func_map<string, string>,
+	PURPLE: func_map<string, string>,
 }
 type TERMINAL = {
-	TEXT: text_style
+	OUT: {
+		STYLE: text_colors,
+	}
 }
 --------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------
@@ -104,7 +105,9 @@ local SHELL = {} :: SHELL
 local TERMINAL = {} :: TERMINAL
 local Command = {} :: command_builder
 
-local username = TERMINAL.TEXT.GREEN(SHELL.SYSTEM.USERNAME)
+local OUT_COLOR = TERMINAL.OUT.COLOR.BLUE("hi")
+
+local username = SHELL.SYSTEM.USERNAME
 local hostname = SHELL.SYSTEM.HOSTNAME
 
 SHELL.PROMPT = `{username}@{hostname} λ `

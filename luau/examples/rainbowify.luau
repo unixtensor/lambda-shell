@@ -1,26 +1,18 @@
 --!strict
 
-local color_map = {
-	[1] = TERMINAL.OUT.STYLE.RED,
-	[2] = TERMINAL.OUT.STYLE.YELLOW,
-	[3] = TERMINAL.OUT.STYLE.GREEN,
-	[4] = TERMINAL.OUT.STYLE.BLUE,
-	[5] = TERMINAL.OUT.STYLE.MAGENTA,
-}
+local function rainbowify(message: string): string
+	local parsed_terminal_message: {string} = {}
+	local color_map = {
+		TERMINAL.OUT.STYLE.RED,
+		TERMINAL.OUT.STYLE.YELLOW,
+		TERMINAL.OUT.STYLE.GREEN,
+		TERMINAL.OUT.STYLE.BLUE,
+		TERMINAL.OUT.STYLE.MAGENTA,
+	}
 
-local function rainbowify(message)
-	local iter = 1
-	local parsed_terminal_message = {}
-
-	for _, char in message:split('') do
-		local styled = char
-		if char ~= ' ' then
-			styled = color_map[iter%5+1](char)
-			iter += 1
-		end
-		table.insert(parsed_terminal_message, styled)
+	for i, char in message:split('') do
+		table.insert(parsed_terminal_message, char ~= ' ' and color_map[i%5+1](char) or char)
 	end
-
 	return table.concat(parsed_terminal_message)
 end
 
