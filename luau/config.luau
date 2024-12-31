@@ -1,6 +1,6 @@
 --!strict
 
-local Username = Shell.system.username
-local Hostname = Shell.system.hostname
+local username = SHELL.SYSTEM.USERNAME
+local hostname = SHELL.SYSTEM.HOSTNAME
 
-Shell.prompt = `{Username}@{Hostname} λ `
+SHELL.PROMPT = `{username}@{hostname} λ `

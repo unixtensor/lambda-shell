@@ -49,21 +49,23 @@ type SHELL = {
 }
 --------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------
--- type text_on_foreground = {
--- 	ON_RED:    func_map<string>,
--- 	ON_ORANGE: func_map<string>,
--- 	ON_YELLOW: func_map<string>,
--- 	ON_GREEN:  func_map<string>,
--- 	ON_BLUE:   func_map<string>,
--- 	ON_PURPLE: func_map<string>,
--- }
 type text_colors = {
-	RED:    func_map<string, string>,
-	ORANGE: func_map<string, string>,
-	YELLOW: func_map<string, string>,
-	GREEN:  func_map<string, string>,
-	BLUE:   func_map<string, string>,
-	PURPLE: func_map<string, string>,
+	RED:          func_map<string, string>,
+	YELLOW:       func_map<string, string>,
+	GREEN:        func_map<string, string>,
+	BLUE:         func_map<string, string>,
+	MAGENTA:      func_map<string, string>,
+	GREY:         func_map<string, string>,
+	BLACK:        func_map<string, string>,
+	CYAN:         func_map<string, string>,
+	WHITE:        func_map<string, string>,
+	DARK_GREY:    func_map<string, string>,
+	DARK_RED:     func_map<string, string>,
+	DARK_GREEN:   func_map<string, string>,
+	DARK_CYAN:    func_map<string, string>,
+	DARK_YELLOW:  func_map<string, string>,
+	DARK_MAGENTA: func_map<string, string>,
+	DARK_BLUE:    func_map<string, string>,
 }
 type TERMINAL = {
 	OUT: {
