@@ -11,7 +11,6 @@ type map_functions = {
 	len_values: () -> number,
 	for_each:   lambda<string, string>
 }
-type func_map<T, A...> = (A...) -> T
 type class_method<Self, R, T...> = (self: Self, T...) -> R
 type map<V, K = string>          = {[K]: V}
 type lambda<T...>                = (f: (T...) -> ()) -> ()
@@ -49,27 +48,64 @@ type SHELL = {
 }
 --------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------
-type text_colors = {
-	RED:          func_map<string, string>,
-	YELLOW:       func_map<string, string>,
-	GREEN:        func_map<string, string>,
-	BLUE:         func_map<string, string>,
-	MAGENTA:      func_map<string, string>,
-	GREY:         func_map<string, string>,
-	BLACK:        func_map<string, string>,
-	CYAN:         func_map<string, string>,
-	WHITE:        func_map<string, string>,
-	DARK_GREY:    func_map<string, string>,
-	DARK_RED:     func_map<string, string>,
-	DARK_GREEN:   func_map<string, string>,
-	DARK_CYAN:    func_map<string, string>,
-	DARK_YELLOW:  func_map<string, string>,
-	DARK_MAGENTA: func_map<string, string>,
-	DARK_BLUE:    func_map<string, string>,
+type background_styles = {
+	RED:          (string) -> string,
+	YELLOW:       (string) -> string,
+	GREEN:        (string) -> string,
+	BLUE:         (string) -> string,
+	MAGENTA:      (string) -> string,
+	GREY:         (string) -> string,
+	BLACK:        (string) -> string,
+	CYAN:         (string) -> string,
+	WHITE:        (string) -> string,
+	DARK_GREY:    (string) -> string,
+	DARK_RED:     (string) -> string,
+	DARK_GREEN:   (string) -> string,
+	DARK_CYAN:    (string) -> string,
+	DARK_YELLOW:  (string) -> string,
+	DARK_MAGENTA: (string) -> string,
+	DARK_BLUE:    (string) -> string,
+	UNDERLINED:   (string) -> string,
+	UNDERLINE_DARK_GREY:    (string) -> string,
+	UNDERLINE_DARK_RED:     (string) -> string,
+	UNDERLINE_DARK_GREEN:   (string) -> string,
+	UNDERLINE_DARK_CYAN:    (string) -> string,
+	UNDERLINE_DARK_YELLOW:  (string) -> string,
+	UNDERLINE_DARK_MAGENTA: (string) -> string,
+	UNDERLINE_DARK_BLUE:    (string) -> string,
+	UNDERLINE_RED:          (string) -> string,
+	UNDERLINE_GREY:         (string) -> string,
+	UNDERLINE_BLACK:        (string) -> string,
+	UNDERLINE_GREEN:        (string) -> string,
+	UNDERLINE_YELLOW:       (string) -> string,
+	UNDERLINE_BLUE:         (string) -> string,
+	UNDERLINE_MAGENTA:      (string) -> string,
+	UNDERLINE_CYAN:         (string) -> string,
+	UNDERLINE_WHITE:        (string) -> string,
+	BOLD:                   (string) -> string,
+}
+type foreground_styles = {
+	RED:          (string) -> string,
+	GREY:         (string) -> string,
+	BLACK:        (string) -> string,
+	GREEN:        (string) -> string,
+	YELLOW:       (string) -> string,
+	BLUE:         (string) -> string,
+	MAGENTA:      (string) -> string,
+	CYAN:         (string) -> string,
+	WHITE:        (string) -> string,
+	DARK_GREY:    (string) -> string,
+	DARK_RED:     (string) -> string,
+	DARK_GREEN:   (string) -> string,
+	DARK_CYAN:    (string) -> string,
+	DARK_YELLOW:  (string) -> string,
+	DARK_MAGENTA: (string) -> string,
+	DARK_BLUE:    (string) -> string,
 }
 type TERMINAL = {
 	OUT: {
-		STYLE: text_colors,
+		BACKGROUND: background_styles,
+		FOREGROUND: foreground_styles
 	}
 }
 --------------------------------------------------------------------------------------------------------------------------------

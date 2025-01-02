@@ -3,11 +3,11 @@
 local function rainbowify_foreground(message: string): string
 	local parsed_terminal_message: {string} = {}
 	local color_map = {
-		TERMINAL.OUT.STYLE.FOREGROUND.RED,
-		TERMINAL.OUT.STYLE.FOREGROUND.YELLOW,
-		TERMINAL.OUT.STYLE.FOREGROUND.GREEN,
-		TERMINAL.OUT.STYLE.FOREGROUND.BLUE,
-		TERMINAL.OUT.STYLE.FOREGROUND.MAGENTA,
+		TERMINAL.OUT.FOREGROUND.RED,
+		TERMINAL.OUT.FOREGROUND.YELLOW,
+		TERMINAL.OUT.FOREGROUND.GREEN,
+		TERMINAL.OUT.FOREGROUND.BLUE,
+		TERMINAL.OUT.FOREGROUND.MAGENTA,
 	}
 
 	for i, char in message:split('') do
@@ -19,11 +19,11 @@ end
 local function rainbowify_background(message: string): string
 	local parsed_terminal_message: {string} = {}
 	local color_map = {
-		TERMINAL.OUT.STYLE.BACKGROUND.RED,
-		TERMINAL.OUT.STYLE.BACKGROUND.YELLOW,
-		TERMINAL.OUT.STYLE.BACKGROUND.GREEN,
-		TERMINAL.OUT.STYLE.BACKGROUND.BLUE,
-		TERMINAL.OUT.STYLE.BACKGROUND.MAGENTA,
+		TERMINAL.OUT.BACKGROUND.RED,
+		TERMINAL.OUT.BACKGROUND.YELLOW,
+		TERMINAL.OUT.BACKGROUND.GREEN,
+		TERMINAL.OUT.BACKGROUND.BLUE,
+		TERMINAL.OUT.BACKGROUND.MAGENTA,
 	}
 
 	for i, char in message:split('') do
@@ -32,6 +32,8 @@ local function rainbowify_background(message: string): string
 	return table.concat(parsed_terminal_message)
 end
 
-print(rainbowify_background("Rainbow background"))
 print(rainbowify_foreground("Rainbow foreground"))
-print(rainbowify_background(rainbowify_foreground("Rainbow background and foreground")))
+print(rainbowify_background("Rainbow background"))
+print(
+	TERMINAL.OUT.BACKGROUND.DARK_GREY(rainbowify_foreground("Rainbow foreground on a dark grey background"))
+)
