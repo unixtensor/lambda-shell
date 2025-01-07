@@ -31,7 +31,7 @@ type SHELL = {
 		VARS:    {string},
 		SET_VAR: (K: string, V: string) -> (),
 		CURRENT_DIR: {
-			FILE_NAME: string,
+			NAME: string,
 		},
 	},
 	PROCESS: {
@@ -103,7 +103,9 @@ type foreground_styles = {
 	DARK_BLUE:    (string) -> string,
 }
 type TERMINAL = {
-	WRITE: <T...>(T...) -> (),
+	WRITE: (string) -> (),
+	WRITE_ERROR: (string) -> (),
+	WRITE_ERROR_LN: (string) -> (),
 	OUT: {
 		BACKGROUND: background_styles,
 		FOREGROUND: foreground_styles
