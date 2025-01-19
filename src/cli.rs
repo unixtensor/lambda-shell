@@ -13,7 +13,7 @@ pub struct Cli {
 	///Download and install plugin(s)
 	#[arg(long)]
 	pub add_plugins: Vec<String>,
-	//Remove plugin(s)
+	///Remove plugin(s)
 	#[arg(long)]
 	pub remove_plugins: Vec<String>,
 	///Start the shell with no rc configurations
