@@ -22,13 +22,16 @@ pub struct Cli {
 	///Disable the Luau JIT backend
 	#[arg(long)]
 	pub nojit: bool,
+	///Disable the Luau sandbox
+	#[arg(long)]
+	pub nosandbox: bool,
 }
 
 pub fn parser() -> Option<Cli> {
 	let cli_parser = Cli::parse();
 	if cli_parser.version {
 		println!("lambdashell, version: {}.", VERSION);
-		println!("liblambdashell, version: {}.", liblambdashell::VERSION);
+		println!("liblambdashell, version: {}.", libpse::VERSION);
 		return None //stop here
 	}
 	Some(cli_parser)
